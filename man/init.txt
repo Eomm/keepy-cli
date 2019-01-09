@@ -1,0 +1,10 @@
+Usage: keepy init [opts]
+  create a keepy-store.json to save keys
+
+keepy init [--yes|-Y]
+
+  -Y, --yes
+      Init the secure-store with default values
+
+  -h, --help
+      Show this help message

@@ -1,0 +1,9 @@
+{
+  "encryption": {
+    "algorithm": "aes-256-gcm",
+    "authTagByteLen": 16,
+    "ivByteLen": 64,
+    "keyByteLen": 32,
+    "saltByteLen": 32
+  }
+}
