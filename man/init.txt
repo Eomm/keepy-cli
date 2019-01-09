@@ -1,10 +1,11 @@
-Usage: keepy init [opts]
+Usage: keepy init [--yes|-Y] [--overwrite|-F]
   create a keepy-store.json to save keys
 
-keepy init [--yes|-Y]
-
   -Y, --yes
-      Init the secure-store with default values
+      Init the keepy-store.json with a random password printed out
+
+  -F, --overwrite
+      Overwrite keepy-store.json if it exists
 
   -h, --help
       Show this help message
