@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "name": "storage",
+    "protected": true,
+    "reminder": "reminder for password"
+  },
+  "secure": {
+    "salt": "ALALALALALA",
+    "verify": "PASSWORDCHEKER"
+  },
+  "data": {
+    "key1": {
+      "value": "ENCH",
+      "lebels": [
+        "ENCH",
+        "ENCH"
+      ]
+    }
+  }
+}

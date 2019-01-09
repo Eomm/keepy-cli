@@ -19,17 +19,19 @@ module.exports = async function (args) {
 
   let password = null
   if (storage.isSecured()) {
-    const question = [{
+    const question = {
       type: 'password',
       name: 'password',
-      message: 'Input the password?'
-    }]
-    password = await prompt(question)
+      message: `Input password -${storage.reminder}-`
+    }
+    password = (await prompt(question)).password
   }
-  console.log(password)
 
-  // TODO
-
-  storage.store(password, 'k', 'p', ['l1', 'l2'])
-  storage.persist()
+  try {
+    storage.store(password, 'k', 'p', ['l1', 'l2'])
+    await storage.persist()
+    console.log('Added')
+  } catch (error) {
+    console.log(error.message)
+  }
 }
