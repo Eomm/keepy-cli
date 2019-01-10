@@ -3,19 +3,23 @@
 const { prompt } = require('enquirer')
 
 const parseArgs = require('../lib/args')
+const log = require('../lib/log')
+const needToShowHelp = require('../lib/help')
 const CryptoStorage = require('../lib/CryptoStorage')
 
 module.exports = async function (args) {
   let opts = parseArgs(args)
-  console.log(opts)
+  needToShowHelp('add.txt', opts)
 
-  // const ciphers = crypto.getCiphers();
-  // console.log(ciphers);
-
-  // ASK for password
+  // TODO opts
 
   const storage = new CryptoStorage()
-  await storage.load()
+  try {
+    await storage.load()
+  } catch (error) {
+    log.error('❌ keepy-store doesn\'t exists, call init first')
+    return
+  }
 
   let password = null
   if (storage.isSecured()) {
@@ -30,8 +34,8 @@ module.exports = async function (args) {
   try {
     storage.store(password, 'k', 'p', ['l1', 'l2'])
     await storage.persist()
-    console.log('Added')
+    log.info('👍 Success')
   } catch (error) {
-    console.log(error.message)
+    log.error(`❌ Error: ${error.message}`)
   }
 }

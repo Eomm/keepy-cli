@@ -1,18 +1,15 @@
 'use strict'
 
-const path = require('path')
 const { prompt } = require('enquirer')
-const { readFileSync } = require('fs')
 
 const parseArgs = require('../lib/args')
 const log = require('../lib/log')
+const needToShowHelp = require('../lib/help')
 const CryptoStorage = require('../lib/CryptoStorage')
 
 module.exports = async function (args) {
   const opts = parseArgs(args)
-  if (opts.help) {
-    return showHelp()
-  }
+  needToShowHelp('init.txt', opts)
 
   const storage = new CryptoStorage()
   const exists = await storage.exists()
@@ -46,10 +43,6 @@ module.exports = async function (args) {
   } catch (error) {
     log.error(`Saving error: ${error.message}`)
   }
-}
-
-function showHelp () {
-  console.log(readFileSync(path.join(__dirname, '..', 'man', 'init.txt'), 'utf8'))
 }
 
 function askParameters () {

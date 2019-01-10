@@ -1,0 +1,14 @@
+Usage: keepy delete [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--password|-w <string>]
+  delete keys stored in keepy-store.json
+
+  -k, --key <string>
+      The key to delete
+
+  -t, --tag <string>
+      The label that keys must have to be deleted
+  
+  -w, --password <string>
+      Password to use instead of prompt
+
+  -h, --help
+      Show this help message

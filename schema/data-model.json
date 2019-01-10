@@ -8,13 +8,14 @@
     "salt": "ALALALALALA",
     "verify": "PASSWORDCHEKER"
   },
-  "data": {
-    "key1": {
-      "value": "ENCH",
-      "lebels": [
+  "data": [
+    {
+      "key": "key1",
+      "payload": "ENCH",
+      "tags": [
         "ENCH",
         "ENCH"
       ]
     }
-  }
+  ]
 }

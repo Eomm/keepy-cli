@@ -1,0 +1,17 @@
+Usage: keepy add [--key|-k <string>] [--payload|-p <string>] [--env|-e] [--update|-u] [--labels|-l <string 1> <string 2> <string n>]
+  add one or more keys to the keepy-store.json
+
+  -k, --key <string>
+      The key to add to the key store
+
+  -p, --payload <string>
+      The value of the key
+
+  -u, --update
+      Update the key's value if exists
+
+  -e, --env
+      Get the value of the key from the environment (process.env)
+
+  -l, --labels
+      Zero or more labels to add to the key as metadata
