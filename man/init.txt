@@ -8,7 +8,7 @@ Usage: keepy init [--yes|-Y] [--overwrite|-F]
       Overwrite keepy-store.json if it exists
 
   -w, --password <string>
-      Password to use instead of default when --yes is used
+      Password to use instead of generated one when --yes is used
 
   -h, --help
       Show this help message

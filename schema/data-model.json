@@ -1,8 +1,8 @@
 {
   "meta": {
-    "name": "storage",
+    "version": "",
     "protected": true,
-    "reminder": "reminder for password"
+    "hint": "reminder for password"
   },
   "secure": {
     "salt": "ALALALALALA",

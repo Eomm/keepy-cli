@@ -2,7 +2,7 @@
 
 class Commands {
   constructor () {
-    this.commands = ['add', 'backup', 'delete', 'help', 'init', 'restore']
+    this.commands = ['add', 'backup', 'delete', 'help', 'init', 'restore', 'version']
   }
 
   register (commist) {

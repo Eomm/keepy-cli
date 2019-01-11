@@ -2,8 +2,10 @@
 
 const { prompt } = require('enquirer')
 
+const { version } = require('./version')
+
 const parseArgs = require('../lib/args')
-const log = require('../lib/log')
+const log = require('../lib/notify')
 const needToShowHelp = require('../lib/help')
 const CryptoStorage = require('../lib/CryptoStorage')
 
@@ -15,52 +17,47 @@ module.exports = async function (args) {
   const exists = await storage.exists()
 
   if (!opts.overwrite && exists) {
-    log.error('❌ Keepy-store already exists!')
-    return
+    return log.error('❌ Keepy-store already exists!', 1)
   }
 
   let initParameter = {
-    name: '',
+    version,
     password: '',
-    reminder: ''
+    hint: ''
   }
 
   if (opts.yes === true) {
-    initParameter.password = storage.randomPassword()
+    initParameter.password = opts.password ? opts.password : storage.randomPassword()
   } else {
     try {
       initParameter = await askParameters()
     } catch (error) {
-      log.error('Operation cancelled')
-      return
+      return log.error('Operation cancelled', 2)
     }
   }
 
   try {
     storage.init(initParameter)
     await storage.persist()
-    log.info(`✨ Created keepy-store.json${opts.yes ? ` with password: ${initParameter.password}` : ''}`)
+
+    const isPasswordGenerated = opts.yes && !opts.password
+    log.info(`✨ Created keepy-store.json${isPasswordGenerated ? ` with password: ${initParameter.password}` : ''}`)
   } catch (error) {
-    log.error(`Saving error: ${error.message}`)
+    log.error(`Saving error: ${error.message}`, 1)
   }
 }
 
 function askParameters () {
   const question = [
     {
-      type: 'input',
-      name: 'name',
-      message: 'Secure storage name?'
-    },
-    {
       type: 'password',
       name: 'password',
-      message: 'Whant to set a password?'
+      message: 'keepy-storage password?'
     },
     {
       type: 'input',
-      name: 'reminder',
-      message: 'Whould you like to set a reminder for the password?'
+      name: 'hint',
+      message: 'Hint to reminder the password?'
     }
   ]
   return prompt(question)

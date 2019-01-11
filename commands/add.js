@@ -3,7 +3,7 @@
 const { prompt } = require('enquirer')
 
 const parseArgs = require('../lib/args')
-const log = require('../lib/log')
+const log = require('../lib/notify')
 const needToShowHelp = require('../lib/help')
 const CryptoStorage = require('../lib/CryptoStorage')
 
