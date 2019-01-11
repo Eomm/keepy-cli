@@ -7,7 +7,7 @@
     "store": "cli.js"
   },
   "scripts": {
-    "test": "standard && tap --timeout 45 test/*.test.js",
+    "test": "standard && tap --timeout 45 test/**/*.test.js",
     "standard:fix": "standard --fix"
   },
   "author": "Manuel Spigolon <behemoth89@gmail.com> (https://github.com/Eomm)",
