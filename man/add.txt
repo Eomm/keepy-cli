@@ -1,4 +1,4 @@
-Usage: keepy add [--key|-k <string>] [--payload|-p <string>] [--env|-e] [--update|-u] [--labels|-l <string 1> <string 2> <string n>]
+Usage: keepy add [--key|-k <string>] [--payload|-p <string>] [--env|-e] [--update|-u] [--tags|-t <string 1> <string 2> <string n>]
   add one or more keys to the keepy-store.json
 
   -k, --key <string>
@@ -8,10 +8,10 @@ Usage: keepy add [--key|-k <string>] [--payload|-p <string>] [--env|-e] [--updat
       The value of the key
 
   -u, --update
-      Update the key's value if exists
+      Update the key's value if exists, otherwise the key will be added also if duplicated
 
   -e, --env
       Get the value of the key from the environment (process.env)
 
-  -l, --labels
-      Zero or more labels to add to the key as metadata
+  -t, --tags
+      Zero or more tags to add to the key as metadata

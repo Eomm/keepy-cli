@@ -1,7 +1,6 @@
 'use strict'
 
-const { prompt } = require('enquirer')
-
+const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
 const log = require('../lib/notify')
 const needToShowHelp = require('../lib/help')
@@ -11,28 +10,39 @@ module.exports = async function (args) {
   let opts = parseArgs(args)
   needToShowHelp('add.txt', opts)
 
-  // TODO opts
+  if (!opts.key) {
+    return log.error('❌ key parameter is mandatory', 1)
+  }
+
+  if (!opts.payload && (opts.env && !process.env[opts.key])) {
+    return log.error('❌ payload or env parameter is mandatory', 1)
+  }
+
+  const itemKey = opts.key
+  let itemPayload = opts.payload
+
+  if (opts.env && !itemPayload) {
+    itemPayload = process.env[itemKey]
+  }
 
   const storage = new CryptoStorage()
   try {
     await storage.load()
   } catch (error) {
-    log.error('❌ keepy-store doesn\'t exists, call init first')
-    return
+    return log.error('❌ keepy-store doesn\'t exists, call init first', 1)
   }
 
-  let password = null
-  if (storage.isSecured()) {
-    const question = {
-      type: 'password',
-      name: 'password',
-      message: `Input password -${storage.reminder}-`
-    }
-    password = (await prompt(question)).password
+  let password = opts.password || null
+  if (storage.isSecured() && password === null) {
+    password = await askFor.password(storage.reminder)
   }
 
   try {
-    storage.store(password, 'k', 'p', ['l1', 'l2'])
+    if (opts.update) {
+      // TODO
+    } else {
+      storage.store(password, itemKey, itemPayload, opts.tags)
+    }
     await storage.persist()
     log.info('👍 Success')
   } catch (error) {

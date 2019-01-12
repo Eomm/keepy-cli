@@ -1,9 +1,9 @@
 'use strict'
 
-const { prompt } = require('enquirer')
 const { Readable } = require('stream')
 const { writeToFileStream } = require('file-utils-easy')
 
+const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
 const needToShowHelp = require('../lib/help')
 const setEnv = require('../lib/setenv')
@@ -20,12 +20,7 @@ module.exports = async function (args) {
 
   let password = null
   if (storage.isSecured() && !opts.password) {
-    const question = {
-      type: 'password',
-      name: 'password',
-      message: `Input password -${storage.reminder}-`
-    }
-    password = (await prompt(question)).password
+    password = await askFor.password(storage.reminder)
   }
 
   try {

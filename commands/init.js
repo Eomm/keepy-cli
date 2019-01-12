@@ -32,7 +32,7 @@ module.exports = async function (args) {
     try {
       initParameter = await askParameters()
     } catch (error) {
-      return log.error('Operation cancelled', 2)
+      return log.error('❌ Operation cancelled', 2)
     }
   }
 
@@ -43,7 +43,7 @@ module.exports = async function (args) {
     const isPasswordGenerated = opts.yes && !opts.password
     log.info(`✨ Created keepy-store.json${isPasswordGenerated ? ` with password: ${initParameter.password}` : ''}`)
   } catch (error) {
-    log.error(`Saving error: ${error.message}`, 1)
+    log.error(`❌ Saving error: ${error.message}`, 1)
   }
 }
 
