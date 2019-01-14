@@ -1,9 +1,8 @@
 'use strict'
 
-const { prompt } = require('enquirer')
-
 const { version } = require('./version')
 
+const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
 const log = require('../lib/notify')
 const needToShowHelp = require('../lib/help')
@@ -29,11 +28,8 @@ module.exports = async function (args) {
   if (opts.yes === true) {
     initParameter.password = opts.password ? opts.password : storage.randomPassword()
   } else {
-    try {
-      initParameter = await askParameters()
-    } catch (error) {
-      return log.error('❌ Operation cancelled', 2)
-    }
+    initParameter.password = await askFor.password()
+    initParameter.hint = await askFor.input('Hint to reminder the password?')
   }
 
   try {
@@ -45,20 +41,4 @@ module.exports = async function (args) {
   } catch (error) {
     log.error(`❌ Saving error: ${error.message}`, 1)
   }
-}
-
-function askParameters () {
-  const question = [
-    {
-      type: 'password',
-      name: 'password',
-      message: 'keepy-storage password?'
-    },
-    {
-      type: 'input',
-      name: 'hint',
-      message: 'Hint to reminder the password?'
-    }
-  ]
-  return prompt(question)
 }
