@@ -2,7 +2,7 @@
 
 const { test } = require('tap')
 const h = require('../helper')
-const spawn = require('child_process').spawn
+const { spawn } = require('child_process')
 
 const node = process.execPath
 
@@ -28,12 +28,12 @@ test('basic input', async t => {
   t.deepEquals(ks.data, [])
 })
 
-test('keepy-store already exists', async (t) => {
-  t.plan(1)
+test('keepy-store already exists', t => {
+  t.plan(2)
   h.createFakeKeepyStore()
   const cli = spawn(node, ['cli', 'init'], { stdio: ['pipe', 'pipe', 'ignore'] })
-  // cli.stdout.pipe(process.stdout)
-  cli.on('error', () => {
+  cli.on('close', (code) => {
+    t.equals(code, 1)
     t.pass()
   })
 })
