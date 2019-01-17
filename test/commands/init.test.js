@@ -1,29 +1,39 @@
 'use strict'
 
-const t = require('tap')
-const rimraf = require('rimraf')
+const { test } = require('tap')
+const h = require('../helper')
+const spawn = require('child_process').spawn
 
-const { test, beforeEach } = t
 const node = process.execPath
 
-beforeEach(done => { rimraf('keepy*.json', done) })
+test('basic input', async t => {
+  t.plan(3)
 
-test('init', t => {
-  t.on('spawn', async spawned => {
-    // t.proc.stdout.setEncoding('utf8')
-    // t.proc.stdout.once('data', console.log)
+  const cli = spawn(node, ['cli', 'init'], { stdio: ['pipe', 'pipe', 'ignore'] })
+  // cli.stdout.pipe(process.stdout)
 
-    spawned.proc.stdin.write('password\n')
-    await wait(600)
-    spawned.proc.stdin.write('my personal hint\n')
-    await wait(600)
+  const hint = 'my personal hint'
 
-    t.pass('init completed')
-    t.end()
-  })
-  t.spawn(node, ['cli', 'init'], { stdio: ['pipe', 'pipe', 'ignore'] })
+  cli.stdin.setEncoding('utf-8')
+  cli.stdin.write('password\n')
+  await h.wait(1000)
+  cli.stdin.write(`${hint}\n`)
+  await h.wait(1000)
+  cli.stdin.end()
+
+  const ks = h.readKeepyStore()
+
+  t.equals(ks.meta.hint, hint)
+  t.contains(ks.secure, { salt: /\w{0,50}/, verify: /\w{0,120}/ })
+  t.deepEquals(ks.data, [])
 })
 
-function wait (ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+test('keepy-store already exists', async (t) => {
+  t.plan(1)
+  h.createFakeKeepyStore()
+  const cli = spawn(node, ['cli', 'init'], { stdio: ['pipe', 'pipe', 'ignore'] })
+  // cli.stdout.pipe(process.stdout)
+  cli.on('error', () => {
+    t.pass()
+  })
+})
