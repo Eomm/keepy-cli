@@ -31,9 +31,29 @@ test('basic input', async t => {
 test('keepy-store already exists', t => {
   t.plan(2)
   h.createFakeKeepyStore()
-  const cli = spawn(node, ['cli', 'init'], { stdio: ['pipe', 'pipe', 'ignore'] })
+  const cli = spawn(node, ['cli', 'init'])
   cli.on('close', (code) => {
     t.equals(code, 1)
+    t.pass()
+  })
+})
+
+test('no-input init - overwrite', t => {
+  t.plan(2)
+  h.createFakeKeepyStore()
+  const cli = spawn(node, ['cli', 'init', '-YF'])
+  cli.on('close', (code) => {
+    t.equals(code, 0)
+    t.pass()
+  })
+})
+
+test('no-input init - password', t => {
+  t.plan(2)
+  const cli = spawn(node, ['cli', 'init', '-Y', '-w password'])
+  cli.on('close', (code) => {
+    t.equals(code, 0)
+    // TODO check the password applied
     t.pass()
   })
 })
