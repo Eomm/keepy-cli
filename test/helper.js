@@ -20,8 +20,14 @@ function createFakeKeepyStore () {
   fs.writeFileSync(KEEPY_STORE, 'fake')
 }
 
+function readFileHelp (file) {
+  const help = fs.readFileSync(`./man/${file}.txt`, 'utf8')
+  return `${help}\n` // added because shell add a new line at the end
+}
+
 module.exports = {
   wait,
   readKeepyStore,
-  createFakeKeepyStore
+  createFakeKeepyStore,
+  readFileHelp
 }

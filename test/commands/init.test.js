@@ -28,6 +28,10 @@ test('basic input', async t => {
   t.deepEquals(ks.data, [])
 })
 
+test('input cancelled', { skip: true }, t => {
+  // TODO: SIGINT when waiting for input from user
+})
+
 test('keepy-store already exists', t => {
   t.plan(2)
   h.createFakeKeepyStore()
@@ -54,6 +58,28 @@ test('no-input init - password', t => {
   cli.on('close', (code) => {
     t.equals(code, 0)
     // TODO check the password applied
+    t.pass()
+  })
+})
+
+test('help', t => {
+  t.plan(2)
+  const cli = spawn(node, ['cli', 'init', '-h'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (output) => {
+    const contentHelp = h.readFileHelp('init')
+    t.equals(output, contentHelp)
+    t.pass()
+  })
+})
+
+test('help when wrong params', t => {
+  t.plan(2)
+  const cli = spawn(node, ['cli', 'init', 'what', 'is', 'this'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (output) => {
+    const contentHelp = h.readFileHelp('init')
+    t.equals(output, contentHelp)
     t.pass()
   })
 })
