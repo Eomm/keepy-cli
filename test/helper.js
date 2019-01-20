@@ -20,6 +20,23 @@ function createFakeKeepyStore () {
   fs.writeFileSync(KEEPY_STORE, 'fake')
 }
 
+function createTestKeepyStore () {
+  // the password is "ciao"
+  const content = `{
+    "meta": {
+      "version": "0.0.1",
+      "secured": true,
+      "hint": "How do you say 'HI' in italian?"
+    },
+    "secure": {
+      "salt": "TDMszecMqEeSdG7afRqT/nxZK1y099u2/jPqY0nq43o=",
+      "verify": "PtIQOl1bx6NRyCtzz2ziRjdfQmMzj9f4AyTwHysH6+QhTZTNUTtFphQEn3aGayqRBZa1ttzst0z+bTCEkL1NdtevN6ZCbu+wO0agfV37d1kWl6rN9MY="
+    },
+    "data": []
+  }`
+  fs.writeFileSync(KEEPY_STORE, content)
+}
+
 function readFileHelp (file) {
   const help = fs.readFileSync(`./man/${file}.txt`, 'utf8')
   return `${help}\n` // added because shell add a new line at the end
@@ -29,5 +46,6 @@ module.exports = {
   wait,
   readKeepyStore,
   createFakeKeepyStore,
+  createTestKeepyStore,
   readFileHelp
 }

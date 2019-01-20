@@ -14,7 +14,7 @@ module.exports = async function (args) {
     return log.error('❌ key parameter is mandatory', 1)
   }
 
-  if (!opts.payload && (opts.env && !process.env[opts.key])) {
+  if (!opts.payload || (opts.env && !process.env[opts.key])) {
     return log.error('❌ payload or env parameter is mandatory', 1)
   }
 

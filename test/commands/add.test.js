@@ -6,8 +6,18 @@ const { spawn } = require('child_process')
 
 const node = process.execPath
 
-test('right usage', { skip: true }, async t => {
-  // TODO
+test('right usage', t => {
+  t.plan(3)
+
+  h.createTestKeepyStore()
+  const cli = spawn(node, ['cli', 'add', '-k', 'A_KEY', '-p', 'value', '-w', 'ciao'])
+
+  cli.on('close', (code) => {
+    const ks = h.readKeepyStore()
+    t.equals(code, 0)
+    t.equals(ks.data.length, 1)
+    t.deepEquals(ks.data[0].tags, [])
+  })
 })
 
 test('missing mandatory params', { skip: true }, async t => {
