@@ -14,7 +14,9 @@ module.exports = async function (args) {
     return log.error('❌ key parameter is mandatory', 1)
   }
 
-  if (!opts.payload || (opts.env && !process.env[opts.key])) {
+  const hasPayloadValue = !!opts.payload
+  const hasEnvValue = opts.env && process.env[opts.key]
+  if (!hasPayloadValue && !hasEnvValue) {
     return log.error('❌ payload or env parameter is mandatory', 1)
   }
 
@@ -39,13 +41,20 @@ module.exports = async function (args) {
 
   try {
     if (opts.update) {
-      // TODO
+      const filters = {
+        key: opts.key,
+        tags: opts.tags
+      }
+      const dsItem = storage.read(password, filters)
+      console.log(dsItem)
+
+      // TODO update value
     } else {
       storage.store(password, itemKey, itemPayload, opts.tags)
     }
     await storage.persist()
     log.info('👍 Success')
   } catch (error) {
-    log.error(`❌ Error: ${error.message}`)
+    log.error(`❌ Error: ${error.message}`, 1)
   }
 }
