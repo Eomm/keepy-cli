@@ -10,7 +10,6 @@ test('basic input', async t => {
   t.plan(3)
 
   const cli = spawn(node, ['cli', 'init'], { stdio: ['pipe', 'pipe', 'ignore'] })
-  // cli.stdout.pipe(process.stdout)
 
   const hint = 'my personal hint'
 

@@ -46,14 +46,15 @@ module.exports = async function (args) {
         tags: opts.tags
       }
       const dsItem = storage.read(password, filters)
-      console.log(dsItem)
-
-      // TODO update value
+      const items = dsItem.map(_ => _.index)
+      storage.refresh(items, password, itemPayload)
+      await storage.persist()
+      log.info(`👍 Updated ${items.length} items`)
     } else {
       storage.store(password, itemKey, itemPayload, opts.tags)
+      await storage.persist()
+      log.info('👍 Success')
     }
-    await storage.persist()
-    log.info('👍 Success')
   } catch (error) {
     log.error(`❌ Error: ${error.message}`, 1)
   }

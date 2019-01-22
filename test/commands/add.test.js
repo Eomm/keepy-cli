@@ -80,7 +80,31 @@ test('env param', t => {
 })
 
 test('update param with key', async t => {
-  t.plan(4)
+  t.plan(3)
+
+  h.createTestKeepyStore()
+
+  const executeAdd = (params) => {
+    return new Promise(resolve => {
+      const cli = spawn(node, ['cli', 'add', ...params])
+      cli.stdin.write('ciao\n')
+      cli.on('close', resolve)
+    })
+  }
+
+  await executeAdd(['-k', 'THE_KEY', '-p', 'value', '-t', 'hello', 'world'])
+  const ksInserted = h.readKeepyStore()
+
+  await executeAdd(['-k', 'THE_KEY', '-p', 'newValue', '-u'])
+  const ksUpdated = h.readKeepyStore()
+
+  t.equals(ksUpdated.data.length, 1)
+  t.equals(ksUpdated.data[0].tags.length, 2)
+  t.deepNot(ksInserted.data[0], ksUpdated.data[0])
+}).catch(threw)
+
+test('update param with key and tags', async t => {
+  t.plan(8)
 
   h.createTestKeepyStore()
 
@@ -91,28 +115,46 @@ test('update param with key', async t => {
     })
   }
 
-  await executeAdd(['-k', 'THE_KEY', '-p', 'value', '-t', 'hello', 'world'])
-  const ksInserted = h.readKeepyStore()
-  await executeAdd(['-k', 'THE_KEY', '-p', 'newValue', '-u'])
-  const ksUpdated = h.readKeepyStore()
+  await executeAdd(['-k', 'A', '-p', 'value', '-w', 'ciao', '-t', 'hello'])
+  const ksA = h.readKeepyStore()
+  t.equals(ksA.data.length, 1)
 
-  t.equals(ksUpdated.data.length, 1)
-  t.equals(ksUpdated.data[0].tags.length, 2)
-  t.deepNot(ksInserted.data[0], ksUpdated.data[0])
-  t.end()
+  await executeAdd(['-k', 'C', '-p', 'value', '-w', 'ciao', '-t', 'hello'])
+  const ksC = h.readKeepyStore()
+  t.equals(ksC.data.length, 2)
+
+  // this key is added
+  await executeAdd(['-k', 'C', '-p', 'value', '-w', 'ciao', '-t', 'hello', 'bye'])
+  const ksCC = h.readKeepyStore()
+  t.equals(ksCC.data.length, 3)
+
+  await executeAdd(['-k', 'C', '-p', 'change', '-w', 'ciao', '-t', 'bye', '-u'])
+  const ksUpdated = h.readKeepyStore()
+  t.equals(ksUpdated.data.length, 3)
+
+  t.equals(ksCC.data[1].payload, ksUpdated.data[1].payload)
+  t.deepNot(ksCC.data[2].payload, ksUpdated.data[2].payload)
+  t.deepEquals(ksCC.data[2].key, ksUpdated.data[2].key)
+  t.deepEquals(ksCC.data[2].tags, ksUpdated.data[2].tags)
 }).catch(threw)
 
-test('update param with tags', { skip: true }, t => {
-  // TODO
-})
+test('update unexisting key', async t => {
+  t.plan(1)
 
-test('update param with key and tags', { skip: true }, t => {
-  // TODO
-})
+  h.createTestKeepyStore()
 
-test('update unexisting key', { skip: true }, t => {
-  // TODO
-})
+  const executeAdd = (params) => {
+    return new Promise(resolve => {
+      const cli = spawn(node, ['cli', 'add', ...params])
+      cli.stdin.write('ciao\n')
+      cli.on('close', resolve)
+    })
+  }
+
+  await executeAdd(['-k', 'THE_KEY', '-p', 'value', '-u'])
+  const ksUpdated = h.readKeepyStore()
+  t.equals(ksUpdated.data.length, 0)
+}).catch(threw)
 
 test('help', t => {
   t.plan(2)
