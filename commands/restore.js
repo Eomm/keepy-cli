@@ -5,6 +5,7 @@ const { writeToFileStream } = require('file-utils-easy')
 
 const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
+const log = require('../lib/notify')
 const needToShowHelp = require('../lib/help')
 const setEnv = require('../lib/setenv')
 const CryptoStorage = require('../lib/CryptoStorage')
@@ -13,46 +14,58 @@ module.exports = async function (args) {
   let opts = parseArgs(args)
   needToShowHelp('restore.txt', opts)
 
-  // TODO
+  if (!opts.key && opts.tags.length === 0) {
+    return log.error('❌ key or tags parameter are mandatory', 1)
+  }
 
   const storage = new CryptoStorage()
-  await storage.load()
+  try {
+    await storage.load()
+  } catch (error) {
+    log.error(`❌ Error: the keepy-store.json doesn't exists`, 1)
+  }
 
-  let password = null
-  if (storage.isSecured() && !opts.password) {
+  let password = opts.password || null
+  if (storage.isSecured() && password === null) {
     password = await askFor.password(storage.reminder)
   }
 
   try {
     const filter = {
-      key: 'k',
-      tag: 'l1'
+      key: opts.key,
+      tag: opts.tags
+    }
+    const ksItems = storage.read(password, filter)
+
+    if (opts.stout) {
+      printOut(ksItems)
     }
 
-    const keys = storage.read(password || opts.password, filter)
+    if (opts.env) {
+      printEnv(ksItems)
+    }
 
-    printOut(keys)
-    printFile(keys, 'demo.env')
-
-    printEnv(keys)
+    if (opts.file) {
+      printFile(ksItems, opts.file)
+    }
   } catch (error) {
-    console.log(error.message)
+    log.error(`❌ Error: ${error.message}`, 1)
   }
 }
 
 const toKeyVal = (k) => `${k.key}=${k.payload}`
 
-function printOut (keys) {
-  keys.map(toKeyVal).forEach(_ => console.log(_))
+function printOut (ksItems) {
+  ksItems.map(toKeyVal).forEach(_ => console.log(_))
 }
 
-function printEnv (keys) {
-  keys.forEach(_ => setEnv(_.key, _.payload))
+function printEnv (ksItems) {
+  ksItems.forEach(_ => setEnv(_.key, _.payload))
 }
 
-function printFile (keys, filePath) {
+function printFile (ksItems, filePath) {
   const readable = new Readable()
   writeToFileStream(readable, filePath)
-  keys.map(toKeyVal).forEach(s => readable.push(`${s}\n`))
+  ksItems.map(toKeyVal).forEach(s => readable.push(`${s}\n`))
   readable.push(null)
 }

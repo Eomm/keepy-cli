@@ -6,7 +6,19 @@ const { spawn } = require('child_process')
 
 const node = process.execPath
 
-test('restore to stdout', { skip: true }, async t => {
+test('restore unexisting keystore', t => {
+  t.plan(2)
+  const cli = spawn(node, ['cli', 'restore', '-k', 'KEY'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (data) => {
+    t.match(data, /.*exists.*/)
+  })
+  cli.on('close', (code) => {
+    t.equals(code, 1)
+  })
+})
+
+test('restore to stdout', { skip: true }, t => {
   // TODO
 })
 
@@ -34,8 +46,16 @@ test('restore unexisting key', { skip: true }, async t => {
   // TODO
 })
 
-test('missing mandatory password param', { skip: true }, async t => {
-  // TODO
+test('missing mandatory password param', t => {
+  t.plan(2)
+  const cli = spawn(node, ['cli', 'restore'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (data) => {
+    t.match(data, /.*mandatory.*/)
+  })
+  cli.on('close', (code) => {
+    t.equals(code, 1)
+  })
 })
 
 test('help', t => {
