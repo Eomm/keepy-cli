@@ -1,4 +1,8 @@
-# keepy-cli
+# keepy-cli 
+
+[![Coverage Status](https://coveralls.io/repos/github/Eomm/keepy-cli/badge.svg?branch=master)](https://coveralls.io/github/Eomm/keepy-cli?branch=master)
+
+---
 
 A CLI tool to save encripted `KEY=VALUE` pairs in file that you can store securely in your repository.
 
