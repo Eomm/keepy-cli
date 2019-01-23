@@ -1,14 +1,18 @@
-Usage: keepy restore [--stout|-S] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--password|-w <string>]
+Usage: keepy restore [--stout|-s] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--overwrite|-F] [--password|-w <string>]
   restore the keys stored in keepy-store.json in the environment or in a file
 
-  -S, --stout
+  -s, --stout
       Print the keys in the standard out console in the format: KEY=VALUE
 
   -e, --env
       Restore the keys as system variables
 
   -f, --file <string>
-      The file path where print out the keys matching --key and/or --tag
+      The file path where print out the keys matching --key and/or --tag.
+      If the file exists the restore will fail
+
+  -F, --overwrite
+      Overwrite the --file if it exists without failing
 
   -k, --key <string>
       The key to restore

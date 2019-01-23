@@ -1,7 +1,7 @@
 'use strict'
 
 const { Readable } = require('stream')
-const { writeToFileStream } = require('file-utils-easy')
+const { writeToFileStream, existFile } = require('file-utils-easy')
 
 const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
@@ -14,8 +14,18 @@ module.exports = async function (args) {
   let opts = parseArgs(args)
   needToShowHelp('restore.txt', opts)
 
-  if (!opts.key && opts.tags.length === 0) {
-    return log.error('❌ key or tags parameter are mandatory', 1)
+  const showAll = !opts.key && opts.tags.length === 0
+
+  // if none output, set stdout
+  if (!opts.stout && !opts.env && !opts.file) {
+    opts.stout = true
+  }
+
+  if (!opts.overwrite && opts.file) {
+    try {
+      await existFile(opts.file)
+      log.error(`❌ Error: the file ${opts.file} already exists. Overwrite with -F`, 1)
+    } catch (err) { /* the file doesn't esists */ }
   }
 
   const storage = new CryptoStorage()
@@ -31,11 +41,16 @@ module.exports = async function (args) {
   }
 
   try {
-    const filter = {
-      key: opts.key,
-      tag: opts.tags
+    let ksItems
+    if (showAll) {
+      ksItems = storage.readAll(password)
+    } else {
+      const filter = {
+        key: opts.key,
+        tags: opts.tags
+      }
+      ksItems = storage.read(password, filter)
     }
-    const ksItems = storage.read(password, filter)
 
     if (opts.stout) {
       printOut(ksItems)

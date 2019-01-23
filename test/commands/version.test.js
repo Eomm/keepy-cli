@@ -16,3 +16,5 @@ test('right usage', t => {
     t.equals(code, 0)
   })
 })
+
+// TODO add "-v" parameter!

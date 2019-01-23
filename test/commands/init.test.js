@@ -22,6 +22,7 @@ test('basic input', async t => {
 
   const ks = h.readKeepyStore()
 
+  // TODO add version check
   t.equals(ks.meta.hint, hint)
   t.contains(ks.secure, { salt: /\w{0,50}/, verify: /\w{0,120}/ })
   t.deepEquals(ks.data, [])
