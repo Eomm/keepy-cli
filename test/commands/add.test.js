@@ -3,6 +3,7 @@
 const { test, threw } = require('tap')
 const h = require('../helper')
 const { spawn } = require('child_process')
+const { writeFileSync } = require('fs')
 
 const node = process.execPath
 
@@ -18,6 +19,26 @@ test('right usage', t => {
     t.equals(ks.data.length, 1)
     t.deepEquals(ks.data[0].tags, [])
   })
+})
+
+test('import file', t => {
+  t.plan(5)
+  const importFile = '.env'
+  writeFileSync(importFile, `HELLO=WORLD\nCIAO=MONDO\nHOLA=MUNDO\n`)
+  h.createTestKeepyStore()
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', 'ciao'])
+  cli.on('close', (code) => {
+    const ks = h.readKeepyStore()
+    t.equals(code, 0)
+    t.equals(ks.data.length, 3)
+    t.equals(ks.data[0].tags.length, 1)
+    t.equals(ks.data[1].tags.length, 1)
+    t.equals(ks.data[2].tags.length, 1)
+  })
+})
+
+test('update imported file', { skip: true }, t => {
+  // TODO
 })
 
 test('missing keepy-storage', t => {
@@ -107,28 +128,20 @@ test('update param with key and tags', async t => {
   t.plan(8)
 
   h.createTestKeepyStore()
-
-  const executeAdd = (params) => {
-    return new Promise(resolve => {
-      const cli = spawn(node, ['cli', 'add', ...params])
-      cli.on('close', resolve)
-    })
-  }
-
-  await executeAdd(['-k', 'A', '-p', 'value', '-w', 'ciao', '-t', 'hello'])
+  await h.execute('add', ['-k', 'A', '-p', 'value', '-w', 'ciao', '-t', 'hello'])
   const ksA = h.readKeepyStore()
   t.equals(ksA.data.length, 1)
 
-  await executeAdd(['-k', 'C', '-p', 'value', '-w', 'ciao', '-t', 'hello'])
+  await h.execute('add', ['-k', 'C', '-p', 'value', '-w', 'ciao', '-t', 'hello'])
   const ksC = h.readKeepyStore()
   t.equals(ksC.data.length, 2)
 
   // this key is added
-  await executeAdd(['-k', 'C', '-p', 'value', '-w', 'ciao', '-t', 'hello', 'bye'])
+  await h.execute('add', ['-k', 'C', '-p', 'value', '-w', 'ciao', '-t', 'hello', 'bye'])
   const ksCC = h.readKeepyStore()
   t.equals(ksCC.data.length, 3)
 
-  await executeAdd(['-k', 'C', '-p', 'change', '-w', 'ciao', '-t', 'bye', '-u'])
+  await h.execute('add', ['-k', 'C', '-p', 'change', '-w', 'ciao', '-t', 'bye', '-u'])
   const ksUpdated = h.readKeepyStore()
   t.equals(ksUpdated.data.length, 3)
 

@@ -6,7 +6,7 @@ const { writeToFileStream, existFile } = require('file-utils-easy')
 const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
 const log = require('../lib/notify')
-const needToShowHelp = require('../lib/help')
+const { needToShowHelp } = require('../lib/help')
 const setEnv = require('../lib/setenv')
 const CryptoStorage = require('../lib/CryptoStorage')
 

@@ -5,7 +5,7 @@ const { version } = require('./version')
 const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
 const log = require('../lib/notify')
-const needToShowHelp = require('../lib/help')
+const { needToShowHelp } = require('../lib/help')
 const CryptoStorage = require('../lib/CryptoStorage')
 
 module.exports = async function (args) {

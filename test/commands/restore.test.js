@@ -49,8 +49,23 @@ test('restore to stdout as default', t => {
   })
 })
 
-test('restore to env', { skip: true }, async t => {
-  // TODO
+test('restore to env', t => {
+  t.plan(1)
+  h.createTestKeepyStoreWithKeys()
+  const cli = spawn(node, ['cli', 'restore', '-e'])
+  cli.on('close', (code) => {
+    t.equals(code, 0)
+
+    // ! works only after a reboot of the console on windows
+    // const checkEnvVar = spawn(node, ['cli', 'add', '-k', 'hello2', '-e', '-w', 'ciao'])
+    // checkEnvVar.stdout.pipe(process.stdout)
+    // checkEnvVar.on('close', (code) => {
+    //   t.equals(code, 0)
+    // })
+  })
+  cli.stdin.setEncoding('utf-8')
+  cli.stdin.write('ciao\n')
+  cli.stdin.end()
 })
 
 test('restore to file', t => {
