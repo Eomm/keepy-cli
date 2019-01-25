@@ -1,6 +1,6 @@
 {
   "name": "keepy-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A CLI tool to save encripted KEY=VALUE pairs.",
   "main": "cli.js",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "standard && tap --coverage test/**/*.test.js",
     "coveralls": "tap --coverage-report=text-lcov | node ./node_modules/coveralls/bin/coveralls.js",
-    "test-single": "tap --timeout 6",
+    "test-single": "tap",
     "standard:fix": "standard --fix",
     "coverage": "npm test && npm run coveralls"
   },
