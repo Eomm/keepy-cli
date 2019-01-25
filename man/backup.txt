@@ -1,8 +1,0 @@
-Usage: keepy backup [--file|-f <path>]
-  execute a backup of the keepy-store.json to a path
-
-  -f, --file <path>
-      Where copy the keepy-store.json
-
-  -h, --help
-      Show this help message

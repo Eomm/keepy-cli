@@ -5,7 +5,7 @@ Usage: keepy delete [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-
       The key to delete
 
   -t, --tag <string>
-      The label that keys must have to be deleted
+      The tag that keys must have to be deleted
   
   -w, --password <string>
       Password to use instead of prompt
