@@ -4,10 +4,12 @@ const { test } = require('tap')
 const h = require('../helper')
 const { spawn } = require('child_process')
 
+const { version } = require('../../package.json')
+
 const node = process.execPath
 
 test('basic input', async t => {
-  t.plan(3)
+  t.plan(4)
 
   const cli = spawn(node, ['cli', 'init'], { stdio: ['pipe', 'pipe', 'ignore'] })
 
@@ -22,14 +24,24 @@ test('basic input', async t => {
 
   const ks = h.readKeepyStore()
 
-  // TODO add version check
+  t.equals(ks.meta.version, version)
   t.equals(ks.meta.hint, hint)
   t.contains(ks.secure, { salt: /\w{0,50}/, verify: /\w{0,120}/ })
   t.deepEquals(ks.data, [])
 })
 
-test('input cancelled', { skip: true }, t => {
-  // TODO: SIGINT when waiting for input from user
+test('input cancelled', t => {
+  t.plan(1)
+
+  const cli = spawn(node, ['cli', 'init'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (data) => {
+    cli.kill('SIGINT')
+    // t.match(data, /.*cancelled.*$/gm)
+  })
+  cli.on('close', (code, signal) => {
+    t.equals(signal, 'SIGINT')
+  })
 })
 
 test('keepy-store already exists', t => {

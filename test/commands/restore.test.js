@@ -34,6 +34,19 @@ test('restore to stdout', t => {
   })
 })
 
+test('restore wrong password', t => {
+  t.plan(2)
+  h.createTestKeepyStoreWithKeys()
+  const cli = spawn(node, ['cli', 'restore', '-s', '-w', 'wrong'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (data) => {
+    t.match(data, /.*Wrong.*$/gm)
+  })
+  cli.on('close', (code) => {
+    t.equals(code, 1)
+  })
+})
+
 test('restore to stdout as default', t => {
   t.plan(2)
   h.createTestKeepyStoreWithKeys()
