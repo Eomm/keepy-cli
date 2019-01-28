@@ -1,4 +1,4 @@
-Usage: keepy restore [--stout|-s] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--overwrite|-F] [--password|-w <string>]
+Usage: keepy restore [--stout|-s] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--overwrite|-F] [--password|-w <string>] [--help|-h]
   restore the keys stored in keepy-store.json in the environment or in a file
 
   -s, --stout

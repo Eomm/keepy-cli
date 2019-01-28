@@ -1,4 +1,4 @@
-Usage: keepy add [--key|-k <string>] [--payload|-p <string>] [--file|-f <file path>] [--env|-e] [--update|-u] [--tags|-t <string 1> <string 2> <string n>]
+Usage: keepy add [--key|-k <string>] [--payload|-p <string>] [--file|-f <file path>] [--env|-e] [--update|-u] [--tags|-t <string 1> <string 2> <string n>] [--help|-h]
   add one or more keys to the keepy-store.json
 
   -k, --key <string>

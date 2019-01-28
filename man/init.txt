@@ -1,4 +1,4 @@
-Usage: keepy init [--yes|-Y] [--overwrite|-F]
+Usage: keepy init [--yes|-Y] [--overwrite|-F] [--password|-w <string>] [--help|-h]
   create a keepy-store.json to save keys
 
   -Y, --yes

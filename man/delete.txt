@@ -1,4 +1,4 @@
-Usage: keepy delete [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--password|-w <string>]
+Usage: keepy delete [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--password|-w <string>] [--help|-h]
   delete keys stored in keepy-store.json
 
   -k, --key <string>

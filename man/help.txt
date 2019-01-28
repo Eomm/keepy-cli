@@ -1,3 +1,7 @@
+
+Install via npm:
+  npm i keepy-cli -g
+
 Usage: keepy <command>
 
 where <command> is one of:
@@ -5,4 +9,5 @@ where <command> is one of:
 
 keepy <command> -h  quick help on <command>
 
-TODO show path lib
+Usage via npx:
+  npx keepy-cli init

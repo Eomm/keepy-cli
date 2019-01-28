@@ -2,7 +2,6 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/Eomm/keepy-cli/badge.svg?branch=master)](https://coveralls.io/github/Eomm/keepy-cli?branch=master)
 
----
 
 A CLI tool to save encripted `KEY=VALUE` pairs in file that you can store securely in your repository.
 
@@ -13,12 +12,95 @@ the `aes-256-gcm` algorithm: all you need is a single password!
 Some sugar feature to add tags to the keys and restore the file, and you are ready to play with your
 token.
 
-This is a simple example of the output:
+
+## Install
+
+### NPM
+
+```sh
+npm i keepy-cli -g
+```
+If you install `keepy-cli` globally, you can use it in your command line via `keepy` (without the `-cli`).
+
+### NPX
+
+Of course, you can use `keepy-cli` via npx. You have only change the commands:
+from `keepy <command>` ➡️ To `npx keepy-cli <command>`
+
+
+## Feature
+
+Check the [man](man/) directory to see all the arguments detail or type `npx keepy-cli help` 
+to get a preview.
+
+### Init
+
+```sh
+keepy init [--yes|-Y]
+           [--overwrite|-F]
+           [--password|-w <string>]
+           [--help|-h]
+```
+Creates a keepy-store.json where all the protected keys will be saved.
+The file will be create in the current directory.
+
+### Add
+
+```sh
+keepy add [--key|-k <string>]
+          [--payload|-p <string>]
+          [--file|-f <file path>]
+          [--env|-e]
+          [--update|-u]
+          [--tags|-t <string 1> <string 2> <string n>]
+          [--help|-h]
+```
+This command adds one key to the keepy-store.json. If you set a file, all the keys will be added with the input tags.
+If you set all the args `payload`, `env`, `file`, they will be evaluated in this order without overwriting.
+
+### Restore
+
+```sh
+keepy restore [--stout|-s]
+              [--env|-e]
+              [--key|-k <string>]
+              [--tag|-t <string>]
+              [--file|-f <file>]
+              [--overwrite|-F]
+              [--password|-w <string>]
+              [--help|-h]
+```
+Restore the desired keys stored in keepy-store.json to:
++ stout
++ environment variable
++ `K=V` file
+If you set multiple output, all will we executed because they are independent.
+
+### Delete
+
+```sh
+keepy delete [--env|-e]
+             [--key|-k <string>]
+             [--tag|-t <string>]
+             [--password|-w <string>]
+             [--help|-h]
+```
+Delete the desired key from the keepy-store.json.
+
+### Help
+
+```sh
+keepy -h
+```
+
+---
+
+This is a `keepy-store.json` example:
 
 ```json
 {
   "meta": {
-    "version": "0.0.1",
+    "version": "1.0.0",
     "secured": true,
     "hint": "Say hi in italian.."
   },
@@ -39,10 +121,20 @@ This is a simple example of the output:
 }
 ```
 
-# **WORK IN PROGRESS**
-This cli is not ready to use, be prepared for the v1.0.0 that will be released on February 2019.
-Meanwhile check the [man](man/) directory to see the commands that will be implemented.
 
-### Architecture
+## Architecture
 
 This cli architecture has been inspired by [fastify-cli](https://github.com/fastify/fastify-cli)
+
+
+## Test
+
+For run the tests simply execute:
+```
+npm test
+```
+
+
+## License
+
+Copyright [Manuel Spigolon](https://github.com/Eomm), Licensed under [MIT](./LICENSE).
