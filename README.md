@@ -15,6 +15,8 @@ token.
 
 ## Install
 
+To use this tool you need at least Node.js 10.5.0 because it uses [crypto.scryptSync](https://nodejs.org/api/crypto.html#crypto_crypto_scryptsync_password_salt_keylen_options): **only standard lib to crypt your keys**.
+
 ### NPM
 
 ```sh
@@ -24,11 +26,11 @@ If you install `keepy-cli` globally, you can use it in your command line via `ke
 
 ### NPX
 
-Of course, you can use `keepy-cli` via npx. You have only change the commands:
-from `keepy <command>` ➡️ To `npx keepy-cli <command>`
+Of course, you can use `keepy-cli` via npx. You have only to change the commands
+from `keepy <command>` ➡️ to `npx keepy-cli <command>`
 
 
-## Feature
+## Features
 
 Check the [man](man/) directory to see all the arguments detail or type `npx keepy-cli help` 
 to get a preview.

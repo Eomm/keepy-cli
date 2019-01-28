@@ -66,10 +66,9 @@ test('no-input init - overwrite', t => {
 
 test('no-input init - password', t => {
   t.plan(2)
-  const cli = spawn(node, ['cli', 'init', '-Y', '-w password'])
+  const cli = spawn(node, ['cli', 'init', '-Y', '-w', 'password'])
   cli.on('close', (code) => {
     t.equals(code, 0)
-    // TODO check the password applied
     t.pass()
   })
 })
