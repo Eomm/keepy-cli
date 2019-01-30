@@ -5,12 +5,14 @@
 
 A CLI tool to save encripted `KEY=VALUE` pairs in file that you can store securely in your repository.
 
-If you are tired to store elsewhere your `env` keys, now you can save them directly in the repository!
+If you are tired to store elsewhere your `env` keys, now you can save them where you want!
 Like `npm init`, `keepy init` will create a `keepy-store.json` where it store all the keys encripted with
 the `aes-256-gcm` algorithm: all you need is a single password!
+This is a file that you can store directly in the repository, in a secure hard drive or share via email:
+it's just a secure file of which only you have control and ownership.
 
 Some sugar feature to add tags to the keys and restore the file, and you are ready to play with your
-token.
+token without losing them in your multiple PC or dev's environments!
 
 
 ## Install

@@ -1,6 +1,6 @@
 {
   "name": "keepy-cli",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "A CLI tool to save encripted KEY=VALUE pairs.",
   "main": "cli.js",
   "bin": {
@@ -29,7 +29,7 @@
     "keepy"
   ],
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=10.5.0"
   },
   "dependencies": {
     "chalk": "^2.4.2",
