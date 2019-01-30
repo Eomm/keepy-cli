@@ -43,22 +43,34 @@ module.exports = async function (args) {
   }
 
   try {
-    if (opts.update) {
-      // TODO update file
+    const add = (p, k, v, t) => { storage.store(p, k, v, t) }
+    const update = (p, k, v, t) => {
       const filters = {
-        key: opts.key,
-        tags: opts.tags
+        key: k,
+        tags: t
       }
-      const dsItem = storage.read(password, filters)
+      const dsItem = storage.read(p, filters)
       const items = dsItem.map(_ => _.index)
-      storage.refresh(items, password, itemPayload)
+      storage.refresh(items, p, v)
+      return items.length
+    }
+
+    if (opts.update) {
+      let updates
+      if (itemPayload instanceof Array) {
+        // TODO this do the all decrypt every time, is not performant
+        updates = itemPayload.map(([k, v]) => update(password, k, v, opts.tags))
+          .reduce((tot, count) => tot + count, 0)
+      } else {
+        updates = update(password, itemKey, itemPayload, opts.tags)
+      }
       await storage.persist()
-      log.info(`👍 Updated ${items.length} items`)
+      log.info(`👍 Updated ${updates} items`)
     } else {
       if (itemPayload instanceof Array) {
-        itemPayload.forEach(([k, v]) => storage.store(password, k, v, opts.tags))
+        itemPayload.forEach(([k, v]) => add(password, k, v, opts.tags))
       } else {
-        storage.store(password, itemKey, itemPayload, opts.tags)
+        add(password, itemKey, itemPayload, opts.tags)
       }
       await storage.persist()
       log.info('👍 Success')

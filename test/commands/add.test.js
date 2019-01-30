@@ -37,8 +37,25 @@ test('import file', t => {
   })
 })
 
-test('update imported file', { skip: true }, t => {
-  // TODO
+test('update imported file', t => {
+  t.plan(7)
+  const importFile = '.env'
+  writeFileSync(importFile, `hello=one\nhello3=two\nhello4=three\n`)
+  h.createTestKeepyStoreWithKeys()
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-u', '-w', 'ciao'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (data) => {
+    t.match(data, /.*Updated 3.*/)
+  })
+  cli.on('close', (code) => {
+    const ks = h.readKeepyStore()
+    t.equals(code, 0)
+    t.equals(ks.data.length, 4)
+    t.notEqual(ks.data[0].payload, 'XIXTTBmVymD1NLlXXKJFdeH7diUjcaK7AIKSDZ6rbqFTDCFba+HnnNIQSv9cMH1AWuu9g70FHOF4BmLWF89q50uQcjKPbWlZOGm54SsGEICCTdHneA==')
+    t.equals(ks.data[1].payload, 'ZdHit+d2u4pDKvejNIg27krC26WEZQ3oalSVhqyKSUb0QKl/yR5IYibuB2/nznmT47sdokd+jYY33MZ8DCIDcuW1dpjy1WE+bbp9QbxAEZnHyqa/GQ==')
+    t.notEqual(ks.data[2].payload, 'qLYcL3yCif2sFdxqpwRlqiR2ZnPFAaMd2lfjXYynWPviiYTRC5lSKceH29UDEtkMQQ2YliDMO+TX8Oq92F+UBa/v03IqZ+InF5QgZcbgRhDX9/sAbg==')
+    t.notEqual(ks.data[3].payload, 'ZaCkkm++dGHo6EAuaDjTFH0+0ObwYSj9wpo5fTzujeNKyEv0rOBVGN7oeEwq5+tq5FhBgxRtTtyikW37+HdSJo5B697J+fEu5eJOdraImymyTsHDWQ==')
+  })
 })
 
 test('missing keepy-storage', t => {
