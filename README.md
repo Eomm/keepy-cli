@@ -3,10 +3,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/Eomm/keepy-cli/badge.svg?branch=master)](https://coveralls.io/github/Eomm/keepy-cli?branch=master)
 
 
-A CLI tool to save encripted `KEY=VALUE` pairs in file that you can store securely in your repository.
+A CLI tool to save encrypted `KEY=VALUE` pairs in file that you can store securely in your repository.
 
 If you are tired to store elsewhere your `env` keys, now you can save them where you want!
-Like `npm init`, `keepy init` will create a `keepy-store.json` where it store all the keys encripted with
+Like `npm init`, `keepy init` will create a `keepy-store.json` where it store all the keys encrypted with
 the `aes-256-gcm` algorithm: all you need is a single password!
 This is a file that you can store directly in the repository, in a secure hard drive or share via email:
 it's just a secure file of which only you have control and ownership.
