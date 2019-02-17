@@ -1,6 +1,6 @@
 # keepy-cli 
 
-[![Coverage Status](https://coveralls.io/repos/github/Eomm/keepy-cli/badge.svg?branch=master)](https://coveralls.io/github/Eomm/keepy-cli?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Eomm/keepy-cli/badge.svg?branch=master)](https://coveralls.io/github/Eomm/keepy-cli?branch=master) [![install size](https://packagephobia.now.sh/badge?p=keepy-cli)](https://packagephobia.now.sh/result?p=keepy-cli)
 
 
 A CLI tool to save encrypted `KEY=VALUE` pairs in file that you can store securely in your repository.
