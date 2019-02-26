@@ -5,7 +5,7 @@ Install via npm:
 Usage: keepy <command>
 
 where <command> is one of:
-  init, add, delete, restore, backup, help
+  init, add, delete, restore, help
 
 keepy <command> -h  quick help on <command>
 
