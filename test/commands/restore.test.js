@@ -34,6 +34,21 @@ test('restore to stdout', t => {
   })
 })
 
+test('restore to stdout with tags', t => {
+  t.plan(2)
+  h.createTestKeepyStoreWithKeys()
+  const cli = spawn(node, ['cli', 'restore', '-sg', '-w', 'ciao'])
+  cli.stdout.setEncoding('utf8')
+  let stdout = ''
+  cli.stdout.on('data', (data) => {
+    stdout += data
+  })
+  cli.on('close', (code) => {
+    t.match(stdout, /^hello.{0,1}=world \[.*\]$/gm)
+    t.equals(code, 0)
+  })
+})
+
 test('restore wrong password', t => {
   t.plan(2)
   h.createTestKeepyStoreWithKeys()
