@@ -1,8 +1,11 @@
-Usage: keepy restore [--stout|-s] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--overwrite|-F] [--password|-w <string>] [--help|-h]
+Usage: keepy restore [--stout|-s] [--showtag|-g] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--overwrite|-F] [--password|-w <string>] [--help|-h]
   restore the keys stored in keepy-store.json in the environment or in a file
 
   -s, --stout
       Print the keys in the standard out console in the format: KEY=VALUE
+
+  -g, --showtag
+      Only with --stout, show the tag of the key
 
   -e, --env
       Restore the keys as system variables

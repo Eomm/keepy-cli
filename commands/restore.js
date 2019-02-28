@@ -53,7 +53,7 @@ module.exports = async function (args) {
     }
 
     if (opts.stout) {
-      printOut(ksItems)
+      printOut(ksItems, opts.showtag)
     }
 
     if (opts.env) {
@@ -70,8 +70,11 @@ module.exports = async function (args) {
 
 const toKeyVal = (k) => `${k.key}=${k.payload}`
 
-function printOut (ksItems) {
-  ksItems.map(toKeyVal).forEach(_ => console.log(_))
+const printTag = (tags) => `${tags && tags.length > 0 ? ` [${tags.join(', ')}]` : ''}`
+const toKeyValTag = (k) => `${k.key}=${k.payload}${printTag(k.tags)}`
+
+function printOut (ksItems, showtag) {
+  ksItems.map(showtag ? toKeyValTag : toKeyVal).forEach(_ => console.log(_))
 }
 
 function printEnv (ksItems) {
