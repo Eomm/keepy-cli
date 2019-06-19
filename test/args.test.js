@@ -20,7 +20,8 @@ test('parse all args', t => {
     '--password', 'hello',
     '--tags', 'tag1',
     '--tags', 'tag2',
-    '--tags', 'tag3'
+    '--tags', 'tag3',
+    '--showtag', 'true'
   ]
   const parsedArgs = parseArgs(argv)
 
@@ -36,7 +37,8 @@ test('parse all args', t => {
     payload: 'the_payload',
     file: '.env',
     password: 'hello',
-    tags: ['tag1', 'tag2', 'tag3']
+    tags: ['tag1', 'tag2', 'tag3'],
+    showtag: true
   })
 })
 
@@ -56,7 +58,8 @@ test('check default values', t => {
     payload: undefined,
     file: undefined,
     password: undefined,
-    tags: []
+    tags: [],
+    showtag: false
   })
 })
 
@@ -75,7 +78,8 @@ test('parse args with = assignment', t => {
     '--file=.env',
     '--password=hello',
     '--tags=tag1',
-    '--tags=tag2'
+    '--tags=tag2',
+    '--showtag'
   ]
   const parsedArgs = parseArgs(argv)
 
@@ -91,7 +95,8 @@ test('parse args with = assignment', t => {
     payload: 'the_payload',
     file: '.env',
     password: 'hello',
-    tags: ['tag1', 'tag2']
+    tags: ['tag1', 'tag2'],
+    showtag: true
   })
 })
 
@@ -110,7 +115,8 @@ test('parse args aliases', t => {
     '-f=.env',
     '-w=hello',
     '-t=tag11',
-    '-t=tag22'
+    '-t=tag22',
+    '-g'
   ]
   const parsedArgs = parseArgs(argv)
 
@@ -126,6 +132,7 @@ test('parse args aliases', t => {
     payload: 'the_payload',
     file: '.env',
     password: 'hello',
-    tags: ['tag11', 'tag22']
+    tags: ['tag11', 'tag22'],
+    showtag: true
   })
 })
