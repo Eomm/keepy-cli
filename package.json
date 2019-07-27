@@ -7,10 +7,11 @@
     "keepy": "cli.js"
   },
   "scripts": {
-    "test": "standard && tap --coverage test/**/*.test.js",
+    "test": "standard && tap --coverage -j1 test/**/*.test.js",
     "coveralls": "tap --coverage-report=text-lcov | node ./node_modules/coveralls/bin/coveralls.js",
     "test-single": "tap",
-    "standard:fix": "standard --fix",
+    "lint": "standard",
+    "lint:fix": "standard --fix",
     "coverage": "npm test && npm run coveralls"
   },
   "author": "Manuel Spigolon <behemoth89@gmail.com> (https://github.com/Eomm)",
@@ -33,15 +34,15 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "commist": "^1.0.0",
+    "commist": "^1.1.0",
     "dotenv": "^8.0.0",
-    "enquirer": "^2.3.0",
-    "file-utils-easy": "^1.1.1",
-    "semver": "^6.1.1",
+    "enquirer": "^2.3.1",
+    "file-utils-easy": "^1.2.0",
+    "semver": "^6.3.0",
     "yargs-parser": "^11.1.1"
   },
   "devDependencies": {
-    "coveralls": "^3.0.2",
+    "coveralls": "^3.0.5",
     "rimraf": "^2.6.3",
     "standard": "^12.0.1",
     "tap": "^14.2.3"
