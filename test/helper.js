@@ -1,6 +1,7 @@
 'use strict'
 const { beforeEach, afterEach } = require('tap')
 const fs = require('fs')
+const path = require('path')
 const rimraf = require('rimraf')
 const { spawn } = require('child_process')
 
@@ -17,7 +18,7 @@ function wait (ms) {
 }
 
 function readKeepyStore () {
-  return JSON.parse(fs.readFileSync(KEEPY_STORE))
+  return JSON.parse(fs.readFileSync(path.join(process.cwd(), KEEPY_STORE)))
 }
 
 function createFakeKeepyStore () {
