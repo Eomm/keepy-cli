@@ -5,8 +5,8 @@ node_js:
   - "10"
 
 os: 
-  - windows
   - linux
+  # - windows
 
 notifications:
   email:
