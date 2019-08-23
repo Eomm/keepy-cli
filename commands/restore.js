@@ -11,7 +11,7 @@ const setEnv = require('../lib/setenv')
 const CryptoStorage = require('../lib/CryptoStorage')
 
 module.exports = async function (args) {
-  let opts = parseArgs(args)
+  const opts = parseArgs(args)
   needToShowHelp('restore.txt', opts)
 
   const showAll = !opts.key && opts.tags.length === 0
@@ -32,7 +32,7 @@ module.exports = async function (args) {
   try {
     await storage.load()
   } catch (error) {
-    log.error(`❌ Error: the keepy-store.json doesn't exists`, 1)
+    log.error('❌ Error: the keepy-store.json doesn\'t exists', 1)
   }
 
   let password = opts.password || null

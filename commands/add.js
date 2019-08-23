@@ -7,7 +7,7 @@ const { needToShowHelp, readKeyValueFile } = require('../lib/help')
 const CryptoStorage = require('../lib/CryptoStorage')
 
 module.exports = async function (args) {
-  let opts = parseArgs(args)
+  const opts = parseArgs(args)
   needToShowHelp('add.txt', opts)
 
   if (!opts.key && !opts.file) {

@@ -7,7 +7,7 @@
     "keepy": "cli.js"
   },
   "scripts": {
-    "test": "standard && tap --coverage -j1 test/**/*.test.js",
+    "test": "npm run lint && tap --coverage -j1 test/**/*.test.js",
     "coveralls": "tap --coverage-report=text-lcov | node ./node_modules/coveralls/bin/coveralls.js",
     "test-single": "tap",
     "lint": "standard",
@@ -44,7 +44,7 @@
   "devDependencies": {
     "coveralls": "^3.0.5",
     "rimraf": "^2.6.3",
-    "standard": "^12.0.1",
+    "standard": "^14.0.2",
     "tap": "^14.2.3"
   }
 }

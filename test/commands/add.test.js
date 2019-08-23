@@ -24,7 +24,7 @@ test('right usage', t => {
 test('import file', t => {
   t.plan(5)
   const importFile = '.env'
-  writeFileSync(importFile, `HELLO=WORLD\nCIAO=MONDO\nHOLA=MUNDO\n`)
+  writeFileSync(importFile, 'HELLO=WORLD\nCIAO=MONDO\nHOLA=MUNDO\n')
   h.createTestKeepyStore()
   const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', 'ciao'])
   cli.on('close', (code) => {
@@ -40,7 +40,7 @@ test('import file', t => {
 test('update imported file', t => {
   t.plan(7)
   const importFile = '.env'
-  writeFileSync(importFile, `hello=one\nhello3=two\nhello4=three\n`)
+  writeFileSync(importFile, 'hello=one\nhello3=two\nhello4=three\n')
   h.createTestKeepyStoreWithKeys()
   const cli = spawn(node, ['cli', 'add', '-f', importFile, '-u', '-w', 'ciao'])
   cli.stdout.setEncoding('utf8')
