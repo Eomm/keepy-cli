@@ -19,7 +19,7 @@ module.exports = async function (args) {
     return log.error('❌ Keepy-store already exists!', 1)
   }
 
-  let initParameter = {
+  const initParameter = {
     version,
     password: '',
     hint: ''
