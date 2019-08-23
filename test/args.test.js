@@ -136,3 +136,40 @@ test('parse args aliases', t => {
     showtag: true
   })
 })
+
+test('parse numbers as string', t => {
+  t.plan(1)
+
+  const argv = [
+    '-u',
+    '-e',
+    '-h',
+    '-Y',
+    '-F',
+    '-s',
+    '-k=007',
+    '-p=0042',
+    '-f=.env',
+    '-w=01234',
+    '-t=01',
+    '-t=+02',
+    '-g'
+  ]
+  const parsedArgs = parseArgs(argv)
+
+  t.strictDeepEqual(parsedArgs, {
+    _: [],
+    update: true,
+    env: true,
+    help: true,
+    yes: true,
+    overwrite: true,
+    stout: true,
+    key: '007',
+    payload: '0042',
+    file: '.env',
+    password: '01234',
+    tags: ['01', '+02'],
+    showtag: true
+  })
+})
