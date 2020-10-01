@@ -1,6 +1,6 @@
 name: Test
 
-on: push
+on: [push, pull_request]
 
 jobs:
   test:
@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         node: [ '10', '12' ]
-    name: Testing with Node version ${{ matrix.node }} 
+    name: Test with Node v${{ matrix.node }} 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
