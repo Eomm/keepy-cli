@@ -44,7 +44,7 @@
   "devDependencies": {
     "coveralls": "^3.0.5",
     "rimraf": "^3.0.0",
-    "standard": "^14.0.2",
+    "standard": "^15.0.1",
     "tap": "^14.2.3"
   }
 }
