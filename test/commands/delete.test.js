@@ -12,8 +12,8 @@ test('delete key', t => {
   const cli = spawn(node, ['cli', 'delete', '-k', 'hello', '-w', 'ciao'])
   cli.on('close', (code) => {
     const ks = h.readKeepyStore()
-    t.equals(code, 0)
-    t.equals(ks.data.length, 3)
+    t.equal(code, 0)
+    t.equal(ks.data.length, 3)
   })
 })
 
@@ -23,8 +23,8 @@ test('delete unexisting key', t => {
   const cli = spawn(node, ['cli', 'delete', '-k', 'DOESNTEXISTS'])
   cli.on('close', (code) => {
     const ks = h.readKeepyStore()
-    t.equals(code, 0)
-    t.equals(ks.data.length, 4)
+    t.equal(code, 0)
+    t.equal(ks.data.length, 4)
   })
   cli.stdin.setEncoding('utf-8')
   cli.stdin.write('ciao\n')
@@ -37,8 +37,8 @@ test('delete by tag', t => {
   const cli = spawn(node, ['cli', 'delete', '-t', 'alone', '-w', 'ciao'])
   cli.on('close', (code) => {
     const ks = h.readKeepyStore()
-    t.equals(code, 0)
-    t.equals(ks.data.length, 2)
+    t.equal(code, 0)
+    t.equal(ks.data.length, 2)
   })
 })
 
@@ -48,8 +48,8 @@ test('delete by key and tag', t => {
   const cli = spawn(node, ['cli', 'delete', '-k', 'hello3', '-t', 'alone', '-w', 'ciao'])
   cli.on('close', (code) => {
     const ks = h.readKeepyStore()
-    t.equals(code, 0)
-    t.equals(ks.data.length, 3)
+    t.equal(code, 0)
+    t.equal(ks.data.length, 3)
   })
 })
 
@@ -61,7 +61,7 @@ test('delete unexisting file', t => {
     t.match(data, /doesn't exists/gm)
   })
   cli.on('close', (code) => {
-    t.equals(code, 1)
+    t.equal(code, 1)
   })
 })
 
@@ -73,7 +73,7 @@ test('delete with missing parameters', t => {
     t.match(data, /.*mandatory.*/)
   })
   cli.on('close', (code) => {
-    t.equals(code, 1)
+    t.equal(code, 1)
   })
 })
 
@@ -83,7 +83,7 @@ test('help', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (output) => {
     const contentHelp = h.readFileHelp('delete')
-    t.equals(output, contentHelp)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })
@@ -96,8 +96,8 @@ test('help when wrong params', t => {
   cli.stdout.on('data', (data) => { output += data })
   cli.on('close', (code) => {
     const contentHelp = h.readFileHelp('delete')
-    t.equals(code, 0)
-    t.equals(output, contentHelp)
+    t.equal(code, 0)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })
