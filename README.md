@@ -80,7 +80,7 @@ Restore the desired keys stored in keepy-store.json to:
 + stout
 + environment variable
 + `K=V` file
-If you set multiple output, all will we executed because they are independent.
+If you set multiple output, all will be executed because they are independent.
 
 ### Delete
 
