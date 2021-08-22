@@ -1,4 +1,4 @@
-Usage: keepy restore [--stout|-s] [--showtag|-g] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--overwrite|-F] [--password|-w <string>] [--help|-h]
+Usage: keepy restore [--stout|-s] [--showtag|-g] [--colored|-c] [--env|-e] [--key|-k <string>] [--tag|-t <string>] [--file|-f <file>] [--overwrite|-F] [--password|-w <string>] [--help|-h]
   restore the keys stored in keepy-store.json in the environment or in a file
 
   -s, --stout
@@ -25,6 +25,9 @@ Usage: keepy restore [--stout|-s] [--showtag|-g] [--env|-e] [--key|-k <string>] 
 
   -w, --password <string>
       Password to use instead of prompt
+
+  -c, --colored
+      Colorize the output when --stout is used
 
   -h, --help
       Show this help message

@@ -68,6 +68,7 @@ If you set all the args `payload`, `env`, `file`, they will be evaluated in this
 ```sh
 keepy restore [--stout|-s]
               [--showtag|-g]
+              [--colored|-c]
               [--env|-e]
               [--key|-k <string>]
               [--tag|-t <string>]
@@ -80,7 +81,7 @@ Restore the desired keys stored in keepy-store.json to:
 + stout
 + environment variable
 + `K=V` file
-If you set multiple output, all will we executed because they are independent.
+If you set multiple output, all will be executed because they are independent.
 
 ### Delete
 

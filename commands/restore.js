@@ -2,6 +2,7 @@
 
 const { Readable } = require('stream')
 const { writeToFileStream, existFile } = require('file-utils-easy')
+const chalk = require('chalk')
 
 const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
@@ -53,7 +54,7 @@ module.exports = async function (args) {
     }
 
     if (opts.stout) {
-      printOut(ksItems, opts.showtag)
+      printOut(ksItems, opts.showtag, opts.colored)
     }
 
     if (opts.env) {
@@ -68,13 +69,35 @@ module.exports = async function (args) {
   }
 }
 
-const toKeyVal = (k) => `${k.key}=${k.payload}`
+const color = (text, type, enabled) => {
+  const colors = {
+    label: chalk.red.bold,
+    tags: chalk.yellow
+  }
+  if (!enabled || !colors[type]) return text
+  return colors[type](text)
+}
 
-const printTag = (tags) => `${tags && tags.length > 0 ? ` [${tags.join(', ')}]` : ''}`
-const toKeyValTag = (k) => `${k.key}=${k.payload}${printTag(k.tags)}`
+function toKeyVal (tuple, colored) {
+  const label = `${tuple.key}=`
+  return `${color(label, 'label', colored)}${color(tuple.payload, 'payload', colored)}`
+}
 
-function printOut (ksItems, showtag) {
-  ksItems.map(showtag ? toKeyValTag : toKeyVal).forEach(_ => console.log(_))
+function printTag (tags, colored) {
+  if (!tags || tags.length === 0) {
+    return ''
+  }
+  return color(` [${tags.join(', ')}]`, 'tags', colored)
+}
+
+function toKeyValTag (tuple, colored) {
+  return `${toKeyVal(tuple, colored)}${printTag(tuple.tags, colored)}`
+}
+
+function printOut (ksItems, showtag, colored) {
+  for (const ksItem of ksItems) {
+    console.log(showtag ? toKeyValTag(ksItem, colored) : toKeyVal(ksItem, colored))
+  }
 }
 
 function printEnv (ksItems) {
@@ -84,6 +107,6 @@ function printEnv (ksItems) {
 function printFile (ksItems, filePath) {
   const readable = new Readable()
   writeToFileStream(readable, filePath)
-  ksItems.map(toKeyVal).forEach(s => readable.push(`${s}\n`))
+  ksItems.map(ksItem => toKeyVal(ksItem, false)).forEach(s => readable.push(`${s}\n`))
   readable.push(null)
 }

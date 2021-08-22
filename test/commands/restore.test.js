@@ -4,8 +4,22 @@ const { test } = require('tap')
 const { readFileSync, writeFileSync } = require('fs')
 const h = require('../helper')
 const { spawn } = require('child_process')
+const chalk = require('chalk')
 
 const node = process.execPath
+
+function escapeRegExp (string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+const color = (text, type, enabled) => {
+  const colors = {
+    label: chalk.red.bold,
+    tags: chalk.yellow
+  }
+  if (!enabled || !colors[type]) return text
+  return colors[type](text)
+}
 
 test('restore unexisting keystore', t => {
   t.plan(2)
@@ -30,6 +44,24 @@ test('restore to stdout', t => {
   })
   cli.on('close', (code) => {
     t.match(stdout, /^hello.{0,1}=world$/gm)
+    t.equals(code, 0)
+  })
+})
+
+test('restore to stdout colored', t => {
+  t.plan(2)
+  h.createTestKeepyStoreWithKeys()
+  const cli = spawn(node, ['cli', 'restore', '-c', '-s', '-g', '-w', 'ciao'])
+  cli.stdout.setEncoding('utf8')
+  let stdout = ''
+  cli.stdout.on('data', (data) => {
+    stdout += data
+  })
+  cli.on('close', (code) => {
+    const label = escapeRegExp(color('hello3=', 'label', true))
+    const tags = escapeRegExp(color(' [alone]', 'tags', true))
+    const re = new RegExp(`^${label}.{0,1}world${tags}$`, 'gm')
+    t.match(stdout, re)
     t.equals(code, 0)
   })
 })
