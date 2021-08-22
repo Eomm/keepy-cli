@@ -68,6 +68,7 @@ If you set all the args `payload`, `env`, `file`, they will be evaluated in this
 ```sh
 keepy restore [--stout|-s]
               [--showtag|-g]
+              [--colored|-c]
               [--env|-e]
               [--key|-k <string>]
               [--tag|-t <string>]

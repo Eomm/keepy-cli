@@ -14,7 +14,7 @@ function escapeRegExp (string) {
 
 const color = (text, type, enabled) => {
   const colors = {
-    key: chalk.red.bold,
+    label: chalk.red.bold,
     tags: chalk.yellow
   }
   if (!enabled || !colors[type]) return text
@@ -58,9 +58,9 @@ test('restore to stdout colored', t => {
     stdout += data
   })
   cli.on('close', (code) => {
-    const key = escapeRegExp(color('hello3', 'key', true))
+    const label = escapeRegExp(color('hello3=', 'label', true))
     const tags = escapeRegExp(color(' [alone]', 'tags', true))
-    const re = new RegExp(`^${key}.{0,1}=world${tags}$`, 'gm')
+    const re = new RegExp(`^${label}.{0,1}world${tags}$`, 'gm')
     t.match(stdout, re)
     t.equals(code, 0)
   })

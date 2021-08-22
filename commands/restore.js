@@ -71,7 +71,7 @@ module.exports = async function (args) {
 
 const color = (text, type, enabled) => {
   const colors = {
-    key: chalk.red.bold,
+    label: chalk.red.bold,
     tags: chalk.yellow
   }
   if (!enabled || !colors[type]) return text
@@ -79,7 +79,8 @@ const color = (text, type, enabled) => {
 }
 
 function toKeyVal (tuple, colored) {
-  return `${color(tuple.key, 'key', colored)}=${color(tuple.payload, 'payload', colored)}`
+  const label = `${tuple.key}=`
+  return `${color(label, 'label', colored)}${color(tuple.payload, 'payload', colored)}`
 }
 
 function printTag (tags, colored) {
