@@ -10,6 +10,7 @@ const { KEEPY_STORE } = require('../lib/CryptoStorage')
 beforeEach(done => { rimraf('keepy*.json', done) })
 afterEach((done) => {
   rimraf.sync('.env')
+  rimraf.sync('__test__.json')
   rimraf('keepy*.json', done)
 })
 

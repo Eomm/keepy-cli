@@ -21,7 +21,7 @@ test('right usage', t => {
   })
 })
 
-test('import file', t => {
+test('import file env', t => {
   t.plan(5)
   const importFile = '.env'
   writeFileSync(importFile, 'HELLO=WORLD\nCIAO=MONDO\nHOLA=MUNDO\n')
@@ -37,10 +37,81 @@ test('import file', t => {
   })
 })
 
-test('update imported file', t => {
+test('import file json plain', t => {
+  t.plan(5)
+  const importFile = '__test__.json'
+  writeFileSync(importFile, '{\n"HELLO":"WORLD",\n"CIAO":"MONDO",\n"HOLA":"MUNDO"\n}\n')
+  h.createTestKeepyStore()
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', 'ciao'])
+  cli.on('close', (code) => {
+    const ks = h.readKeepyStore()
+    t.equals(code, 0)
+    t.equals(ks.data.length, 3)
+    t.equals(ks.data[0].tags.length, 1)
+    t.equals(ks.data[1].tags.length, 1)
+    t.equals(ks.data[2].tags.length, 1)
+  })
+})
+
+test('import file json nested', t => {
+  t.plan(10)
+  const importFile = '__test__.json'
+  writeFileSync(importFile, `{
+    "HELLO": "WORLD",
+    "NUM1": 42,
+    "NULLED": null,
+    "BOOL1": null,
+    "ARR1": [1, 2, 3, 4],
+    "OBJ1": {
+      "nested": 42
+    }
+  }`)
+  h.createTestKeepyStore()
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', 'ciao'])
+  let logged = ''
+  cli.stdout.on('data', (data) => {
+    logged += data
+  })
+  cli.on('close', (code) => {
+    const ks = h.readKeepyStore()
+    t.match(logged, /.*ARR1.*it's not a primitive, importing as string.*/)
+    t.match(logged, /.*OBJ1.*it's not a primitive, importing as string.*/)
+    t.equals(code, 0)
+    t.equals(ks.data.length, 6)
+    t.equals(ks.data[0].tags.length, 1)
+    t.equals(ks.data[1].tags.length, 1)
+    t.equals(ks.data[2].tags.length, 1)
+    t.equals(ks.data[3].tags.length, 1)
+    t.equals(ks.data[4].tags.length, 1)
+    t.equals(ks.data[5].tags.length, 1)
+  })
+})
+
+test('update imported file env', t => {
   t.plan(7)
   const importFile = '.env'
   writeFileSync(importFile, 'hello=one\nhello3=two\nhello4=three\n')
+  h.createTestKeepyStoreWithKeys()
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-u', '-w', 'ciao'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (data) => {
+    t.match(data, /.*Updated 3.*/)
+  })
+  cli.on('close', (code) => {
+    const ks = h.readKeepyStore()
+    t.equals(code, 0)
+    t.equals(ks.data.length, 4)
+    t.notEqual(ks.data[0].payload, 'XIXTTBmVymD1NLlXXKJFdeH7diUjcaK7AIKSDZ6rbqFTDCFba+HnnNIQSv9cMH1AWuu9g70FHOF4BmLWF89q50uQcjKPbWlZOGm54SsGEICCTdHneA==')
+    t.equals(ks.data[1].payload, 'ZdHit+d2u4pDKvejNIg27krC26WEZQ3oalSVhqyKSUb0QKl/yR5IYibuB2/nznmT47sdokd+jYY33MZ8DCIDcuW1dpjy1WE+bbp9QbxAEZnHyqa/GQ==')
+    t.notEqual(ks.data[2].payload, 'qLYcL3yCif2sFdxqpwRlqiR2ZnPFAaMd2lfjXYynWPviiYTRC5lSKceH29UDEtkMQQ2YliDMO+TX8Oq92F+UBa/v03IqZ+InF5QgZcbgRhDX9/sAbg==')
+    t.notEqual(ks.data[3].payload, 'ZaCkkm++dGHo6EAuaDjTFH0+0ObwYSj9wpo5fTzujeNKyEv0rOBVGN7oeEwq5+tq5FhBgxRtTtyikW37+HdSJo5B697J+fEu5eJOdraImymyTsHDWQ==')
+  })
+})
+
+test('update imported file json plain', t => {
+  t.plan(7)
+  const importFile = '__test__.json'
+  writeFileSync(importFile, '{\n"hello": "one",\n"hello3": "two",\n"hello4": "three"\n}\n')
   h.createTestKeepyStoreWithKeys()
   const cli = spawn(node, ['cli', 'add', '-f', importFile, '-u', '-w', 'ciao'])
   cli.stdout.setEncoding('utf8')
@@ -205,5 +276,22 @@ test('help when wrong params', t => {
     const contentHelp = h.readFileHelp('add')
     t.equals(output, contentHelp)
     t.pass()
+  })
+})
+
+test('malformed json file', t => {
+  t.plan(3)
+  const importFile = '__test__.json'
+  writeFileSync(importFile, '{\n"not_existing_key": "one"')
+  h.createTestKeepyStoreWithKeys()
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-u', '-w', 'ciao'])
+  cli.stdout.setEncoding('utf8')
+  cli.stdout.on('data', (data) => {
+    t.match(data, /.*given '__test__.json' is not a valid JSON file.*/)
+  })
+  cli.on('close', (code) => {
+    const ks = h.readKeepyStore()
+    t.equals(code, 1)
+    t.equals(ks.data.length, 4)
   })
 })

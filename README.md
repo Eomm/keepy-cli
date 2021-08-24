@@ -1,4 +1,4 @@
-# keepy-cli 
+# keepy-cli
 
 [![Coverage Status](https://coveralls.io/repos/github/Eomm/keepy-cli/badge.svg?branch=master)](https://coveralls.io/github/Eomm/keepy-cli?branch=master) [![install size](https://packagephobia.now.sh/badge?p=keepy-cli)](https://packagephobia.now.sh/result?p=keepy-cli)
 ![Build Status](https://github.com/Eomm/keepy-cli/workflows/Test/badge.svg)
@@ -35,7 +35,7 @@ from `keepy <command>` ➡️ to `npx keepy-cli <command>`
 
 ## Features
 
-Check the [man](man/) directory to see all the arguments detail or type `npx keepy-cli help` 
+Check the [man](man/) directory to see all the arguments detail or type `npx keepy-cli help`
 to get a preview.
 
 ### Init
@@ -60,7 +60,9 @@ keepy add [--key|-k <string>]
           [--tags|-t <string 1> <string 2> <string n>]
           [--help|-h]
 ```
-This command adds one key to the keepy-store.json. If you set a file, all the keys will be added with the input tags.
+This command adds one key to the keepy-store.json.
+If you set a file, all the keys will be added with the input tags.
+The file can be either .env (K=V) or a .json file. If you import from a JSON file the first-level keys will be the keys you have in the store at the end.
 If you set all the args `payload`, `env`, `file`, they will be evaluated in this order without overwriting.
 
 ### Restore
