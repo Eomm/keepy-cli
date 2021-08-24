@@ -25,7 +25,7 @@ test('parse all args', t => {
   ]
   const parsedArgs = parseArgs(argv)
 
-  t.strictDeepEqual(parsedArgs, {
+  t.strictSame(parsedArgs, {
     _: [],
     update: true,
     env: true,
@@ -46,7 +46,7 @@ test('check default values', t => {
   t.plan(1)
   const parsedArgs = parseArgs([])
 
-  t.strictDeepEqual(parsedArgs, {
+  t.strictSame(parsedArgs, {
     _: [],
     update: false,
     env: false,
@@ -83,7 +83,7 @@ test('parse args with = assignment', t => {
   ]
   const parsedArgs = parseArgs(argv)
 
-  t.strictDeepEqual(parsedArgs, {
+  t.strictSame(parsedArgs, {
     _: [],
     update: true,
     env: true,
@@ -120,7 +120,7 @@ test('parse args aliases', t => {
   ]
   const parsedArgs = parseArgs(argv)
 
-  t.strictDeepEqual(parsedArgs, {
+  t.strictSame(parsedArgs, {
     _: [],
     update: true,
     env: true,
@@ -157,7 +157,7 @@ test('parse numbers as string', t => {
   ]
   const parsedArgs = parseArgs(argv)
 
-  t.strictDeepEqual(parsedArgs, {
+  t.strictSame(parsedArgs, {
     _: [],
     update: true,
     env: true,

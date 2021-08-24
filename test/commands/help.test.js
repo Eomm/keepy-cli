@@ -13,7 +13,7 @@ test('help', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (output) => {
     const contentHelp = h.readFileHelp('help')
-    t.equals(output, contentHelp)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })
@@ -24,7 +24,7 @@ test('help when none params', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (output) => {
     const contentHelp = h.readFileHelp('help')
-    t.equals(output, contentHelp)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })
