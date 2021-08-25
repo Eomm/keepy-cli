@@ -38,11 +38,14 @@ test('import file env', t => {
 })
 
 test('import file json plain', t => {
-  t.plan(5)
+  t.plan(11)
+
+  const password = 'ciao'
   const importFile = '__test__.json'
+
   writeFileSync(importFile, '{\n"HELLO":"WORLD",\n"CIAO":"MONDO",\n"HOLA":"MUNDO"\n}\n')
   h.createTestKeepyStore()
-  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', 'ciao'])
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', password])
   cli.on('close', (code) => {
     const ks = h.readKeepyStore()
     t.equal(code, 0)
@@ -50,24 +53,33 @@ test('import file json plain', t => {
     t.equal(ks.data[0].tags.length, 1)
     t.equal(ks.data[1].tags.length, 1)
     t.equal(ks.data[2].tags.length, 1)
+
+    t.equal(h.decryptString(ks.data[0].key, password, ks.secure.salt), 'HELLO')
+    t.equal(h.decryptString(ks.data[0].payload, password, ks.secure.salt), 'WORLD')
+    t.equal(h.decryptString(ks.data[1].key, password, ks.secure.salt), 'CIAO')
+    t.equal(h.decryptString(ks.data[1].payload, password, ks.secure.salt), 'MONDO')
+    t.equal(h.decryptString(ks.data[2].key, password, ks.secure.salt), 'HOLA')
+    t.equal(h.decryptString(ks.data[2].payload, password, ks.secure.salt), 'MUNDO')
   })
 })
 
 test('import file json nested', t => {
-  t.plan(10)
+  t.plan(20)
+
+  const password = 'ciao'
   const importFile = '__test__.json'
   writeFileSync(importFile, `{
     "HELLO": "WORLD",
     "NUM1": 42,
     "NULLED": null,
-    "BOOL1": null,
+    "BOOL1": true,
     "ARR1": [1, 2, 3, 4],
     "OBJ1": {
       "nested": 42
     }
   }`)
   h.createTestKeepyStore()
-  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', 'ciao'])
+  const cli = spawn(node, ['cli', 'add', '-f', importFile, '-t', 'from-file', '-w', password])
   let logged = ''
   cli.stdout.on('data', (data) => {
     logged += data
@@ -84,6 +96,17 @@ test('import file json nested', t => {
     t.equal(ks.data[3].tags.length, 1)
     t.equal(ks.data[4].tags.length, 1)
     t.equal(ks.data[5].tags.length, 1)
+
+    t.equal(h.decryptString(ks.data[1].key, password, ks.secure.salt), 'NUM1')
+    t.equal(h.decryptString(ks.data[1].payload, password, ks.secure.salt), '42')
+    t.equal(h.decryptString(ks.data[2].key, password, ks.secure.salt), 'NULLED')
+    t.equal(h.decryptString(ks.data[2].payload, password, ks.secure.salt), 'null')
+    t.equal(h.decryptString(ks.data[3].key, password, ks.secure.salt), 'BOOL1')
+    t.equal(h.decryptString(ks.data[3].payload, password, ks.secure.salt), 'true')
+    t.equal(h.decryptString(ks.data[4].key, password, ks.secure.salt), 'ARR1')
+    t.equal(h.decryptString(ks.data[4].payload, password, ks.secure.salt), '[1,2,3,4]')
+    t.equal(h.decryptString(ks.data[5].key, password, ks.secure.salt), 'OBJ1')
+    t.equal(h.decryptString(ks.data[5].payload, password, ks.secure.salt), '{"nested":42}')
   })
 })
 
