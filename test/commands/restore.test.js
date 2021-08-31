@@ -29,7 +29,7 @@ test('restore unexisting keystore', t => {
     t.match(data, /.*exists.*/)
   })
   cli.on('close', (code) => {
-    t.equals(code, 1)
+    t.equal(code, 1)
   })
 })
 
@@ -44,7 +44,7 @@ test('restore to stdout', t => {
   })
   cli.on('close', (code) => {
     t.match(stdout, /^hello.{0,1}=world$/gm)
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 
@@ -62,7 +62,7 @@ test('restore to stdout colored', t => {
     const tags = escapeRegExp(color(' [alone]', 'tags', true))
     const re = new RegExp(`^${label}.{0,1}world${tags}$`, 'gm')
     t.match(stdout, re)
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 
@@ -77,7 +77,7 @@ test('restore to stdout with tags', t => {
   })
   cli.on('close', (code) => {
     t.match(stdout, /^hello.{0,1}=world \[.*\]$/gm)
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 
@@ -90,7 +90,7 @@ test('restore wrong password', t => {
     t.match(data, /.*Wrong.*$/gm)
   })
   cli.on('close', (code) => {
-    t.equals(code, 1)
+    t.equal(code, 1)
   })
 })
 
@@ -105,7 +105,7 @@ test('restore to stdout as default', t => {
   })
   cli.on('close', (code) => {
     t.match(stdout, /^hello.{0,1}=world$/gm)
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 
@@ -114,13 +114,13 @@ test('restore to env', t => {
   h.createTestKeepyStoreWithKeys()
   const cli = spawn(node, ['cli', 'restore', '-e'])
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
 
     // ! works only after a reboot of the console on windows
     // const checkEnvVar = spawn(node, ['cli', 'add', '-k', 'hello2', '-e', '-w', 'ciao'])
     // checkEnvVar.stdout.pipe(process.stdout)
     // checkEnvVar.on('close', (code) => {
-    //   t.equals(code, 0)
+    //   t.equal(code, 0)
     // })
   })
   cli.stdin.setEncoding('utf-8')
@@ -135,7 +135,7 @@ test('restore to file', t => {
   const cli = spawn(node, ['cli', 'restore', '-f', outFile, '-w', 'ciao'])
   cli.stdout.on('data', () => { t.fail() })
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
     const file = readFileSync(outFile)
     t.match(file, /^hello.{0,1}=world$/gm)
   })
@@ -152,7 +152,7 @@ test('restore to existing file', t => {
     t.match(data, /already exists/gm)
   })
   cli.on('close', (code) => {
-    t.equals(code, 1)
+    t.equal(code, 1)
   })
 })
 
@@ -164,7 +164,7 @@ test('restore overwriting existing file', t => {
   const cli = spawn(node, ['cli', 'restore', '-f', outFile, '-F', '-w', 'ciao'])
   cli.stdout.on('data', () => { t.fail() })
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
     const file = readFileSync(outFile)
     t.match(file, /^hello.{0,1}=world$/gm)
   })
@@ -176,10 +176,10 @@ test('restore with key filter', t => {
   const cli = spawn(node, ['cli', 'restore', '-k', 'hello2', '-w', 'ciao'])
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (data) => {
-    t.equals(data, 'hello2=world\n')
+    t.equal(data, 'hello2=world\n')
   })
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 
@@ -193,9 +193,9 @@ test('restore with tag filter', t => {
     stdout += data
   })
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
     t.match(stdout, /^hello.{0,1}=world$/gm)
-    t.equals(stdout.match(/hello/gm).length, 2)
+    t.equal(stdout.match(/hello/gm).length, 2)
   })
 })
 
@@ -205,10 +205,10 @@ test('restore with key and tag filter', t => {
   const cli = spawn(node, ['cli', 'restore', '-k', 'hello3', '-t', 'alone', '-w', 'ciao'])
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (data) => {
-    t.equals(data, 'hello3=world\n')
+    t.equal(data, 'hello3=world\n')
   })
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 
@@ -219,7 +219,7 @@ test('restore unexisting key', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', () => { t.fail() })
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 
@@ -229,7 +229,7 @@ test('help', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (output) => {
     const contentHelp = h.readFileHelp('restore')
-    t.equals(output, contentHelp)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })
@@ -240,7 +240,7 @@ test('help when wrong params', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (output) => {
     const contentHelp = h.readFileHelp('restore')
-    t.equals(output, contentHelp)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })

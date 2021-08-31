@@ -13,7 +13,7 @@ test('right usage', t => {
     t.match(data, /keepy v\d{1,2}\.\d{1,2}\.\d{1,2}/)
   })
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
   })
 })
 

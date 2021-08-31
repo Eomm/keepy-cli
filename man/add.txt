@@ -8,7 +8,7 @@ Usage: keepy add [--key|-k <string>] [--payload|-p <string>] [--file|-f <file pa
       The value of the key
 
   -f, --file <file path>
-      File in K=V format to store in keepy-store. Ex: .env
+      File to store in keepy-store. Either in K=V format (ex: .env) or JSON format (ex: file.json).
 
   -u, --update
       Update the key's value if exists, otherwise the key will be added also if duplicated

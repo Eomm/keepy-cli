@@ -24,10 +24,10 @@ test('basic input', async t => {
 
   const ks = h.readKeepyStore()
 
-  t.equals(ks.meta.version, version)
-  t.equals(ks.meta.hint, hint)
-  t.contains(ks.secure, { salt: /\w{0,50}/, verify: /\w{0,120}/ })
-  t.deepEquals(ks.data, [])
+  t.equal(ks.meta.version, version)
+  t.equal(ks.meta.hint, hint)
+  t.has(ks.secure, { salt: /\w{0,50}/, verify: /\w{0,120}/ })
+  t.same(ks.data, [])
 })
 
 test('input cancelled', t => {
@@ -40,7 +40,7 @@ test('input cancelled', t => {
     // t.match(data, /.*cancelled.*$/gm)
   })
   cli.on('close', (code, signal) => {
-    t.equals(signal, 'SIGINT')
+    t.equal(signal, 'SIGINT')
   })
 })
 
@@ -49,7 +49,7 @@ test('keepy-store already exists', t => {
   h.createFakeKeepyStore()
   const cli = spawn(node, ['cli', 'init'])
   cli.on('close', (code) => {
-    t.equals(code, 1)
+    t.equal(code, 1)
     t.pass()
   })
 })
@@ -59,7 +59,7 @@ test('no-input init - overwrite', t => {
   h.createFakeKeepyStore()
   const cli = spawn(node, ['cli', 'init', '-YF'])
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
     t.pass()
   })
 })
@@ -68,7 +68,7 @@ test('no-input init - password', t => {
   t.plan(2)
   const cli = spawn(node, ['cli', 'init', '-Y', '-w', 'password'])
   cli.on('close', (code) => {
-    t.equals(code, 0)
+    t.equal(code, 0)
     t.pass()
   })
 })
@@ -79,7 +79,7 @@ test('help', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (output) => {
     const contentHelp = h.readFileHelp('init')
-    t.equals(output, contentHelp)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })
@@ -90,7 +90,7 @@ test('help when wrong params', t => {
   cli.stdout.setEncoding('utf8')
   cli.stdout.on('data', (output) => {
     const contentHelp = h.readFileHelp('init')
-    t.equals(output, contentHelp)
+    t.equal(output, contentHelp)
     t.pass()
   })
 })

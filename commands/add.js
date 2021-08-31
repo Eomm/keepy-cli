@@ -3,7 +3,7 @@
 const askFor = require('../lib/askFor')
 const parseArgs = require('../lib/args')
 const log = require('../lib/notify')
-const { needToShowHelp, readKeyValueFile } = require('../lib/help')
+const { needToShowHelp, extractPayloadFromFile } = require('../lib/help')
 const CryptoStorage = require('../lib/CryptoStorage')
 
 module.exports = async function (args) {
@@ -27,7 +27,7 @@ module.exports = async function (args) {
     itemPayload = process.env[itemKey]
   }
   if (opts.file && !itemPayload) {
-    itemPayload = readKeyValueFile(opts.file)
+    itemPayload = await extractPayloadFromFile(opts.file)
   }
 
   const storage = new CryptoStorage()

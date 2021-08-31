@@ -6,10 +6,12 @@ const rimraf = require('rimraf')
 const { spawn } = require('child_process')
 
 const { KEEPY_STORE } = require('../lib/CryptoStorage')
+const CryptoString = require('../lib/CryptoString')
 
 beforeEach(done => { rimraf('keepy*.json', done) })
 afterEach((done) => {
   rimraf.sync('.env')
+  rimraf.sync('__test__.json')
   rimraf('keepy*.json', done)
 })
 
@@ -103,6 +105,12 @@ function execute (command, params, cb) {
   })
 }
 
+function decryptString (str, password, salt) {
+  const crypto = new CryptoString()
+  const key = crypto.getKeyFromPassword(password, Buffer.from(salt, 'base64'))
+  return crypto.decrypt(Buffer.from(str, 'base64'), key).toString('utf8')
+}
+
 module.exports = {
   wait,
   readKeepyStore,
@@ -110,5 +118,6 @@ module.exports = {
   createTestKeepyStore,
   createTestKeepyStoreWithKeys,
   readFileHelp,
-  execute
+  execute,
+  decryptString
 }
